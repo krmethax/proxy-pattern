@@ -31,8 +31,8 @@ app.post("/login", async (req, res) => {
 app.get("/products", async (req, res) => {
   try {
     const role = req.headers["x-user-role"];
-    if (role !== "admin") {
-      return res.status(403).json({ message: "Forbidden: Admin only" });
+    if (role !== "admin" && role !== "user") {
+      return res.status(403).json({ message: "Forbidden" });
     }
     const [rows] = await pool.query("SELECT * FROM products");
     res.json(rows);
@@ -41,8 +41,17 @@ app.get("/products", async (req, res) => {
   }
 });
 
-app.get("/status", (req, res) => {
-  res.json({ message: "Backend running on port 5000" });
+app.get("/admin/products", async (req, res) => {
+  try {
+    const role = req.headers["x-user-role"];
+    if (role !== "admin") {
+      return res.status(403).json({ message: "Forbidden: Admin only" });
+    }
+    const [rows] = await pool.query("SELECT * FROM products");
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ success: false, message: "DB Error" });
+  }
 });
 
 app.listen(5000, () => {

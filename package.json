@@ -1,5 +1,5 @@
 {
-  "name": "proxy-app",
+  "name": "proxy-user-admin-app",
   "version": "1.0.0",
   "type": "module",
   "dependencies": {

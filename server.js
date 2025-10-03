@@ -13,7 +13,6 @@ app.use(session({
 
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
-
   if (username === "admin" && password === "1234") {
     req.session.user = { username, role: "admin" };
     res.json({ success: true, message: "Login success (admin)" });
