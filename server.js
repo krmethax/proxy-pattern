@@ -13,8 +13,16 @@ app.use(session({
 
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
-  req.session.user = { username };
-  res.json({ success: true, message: "Login success" });
+
+  if (username === "admin" && password === "1234") {
+    req.session.user = { username, role: "admin" };
+    res.json({ success: true, message: "Login success (admin)" });
+  } else if (username === "user" && password === "1111") {
+    req.session.user = { username, role: "user" };
+    res.json({ success: true, message: "Login success (user)" });
+  } else {
+    res.status(401).json({ success: false, message: "Invalid credentials" });
+  }
 });
 
 app.get("/logout", (req, res) => {
